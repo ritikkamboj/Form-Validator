@@ -29,32 +29,50 @@ function showSuccess(input) {
   formControl.className = "form-control success";
 }
 function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+function checkRequired(inputArr) {
+  inputArr.forEach(function (input) {
+    if (input.value === "")
+      showError(input, `${getReqName(input.id)} is Required`);
+    else {
+      showSuccess(input);
+    }
+  });
+}
 
-form.addEventListener("submit", (e) => {
+function getReqName(curName) {
+  return curName.charAt(0).toUpperCase() + curName.slice(1);
+}
+
+// form.addEventListener("submit", (e) => {
+//   e.preventDefault();
+
+//   if (username.value === "") {
+//     showError(username, "Username is not defined ");
+//   } else {
+//     showSuccess(username);
+//   }
+//   if (email.value === "") {
+//     showError(email, "email is not defined");
+//   } else if(!validateEmail(email.value)){
+//     showError(email,'written text is not in email format');
+//   }
+//   else {
+//     showSuccess(email);
+//   } if (password.value === "") {
+//     showError(password, "password is not defined ");
+//   } else {
+//     showSuccess(password);
+//   } if (password2.value === "") {
+//     showError(password2, "confirm password is not present ");
+//   } else {
+//     showSuccess(password2);
+//   }
+// });
+
+form.addEventListener("submit", function (e) {
   e.preventDefault();
-
-  if (username.value === "") {
-    showError(username, "Username is not defined ");
-  } else {
-    showSuccess(username);
-  }
-  if (email.value === "") {
-    showError(email, "email is not defined");
-  } else if(!validateEmail(email.value)){
-    showError(email,'written text is not in email format');
-  } 
-  else {
-    showSuccess(email);
-  } if (password.value === "") {
-    showError(password, "password is not defined ");
-  } else {
-    showSuccess(password);
-  } if (password2.value === "") {
-    showError(password2, "confirm password is not present ");
-  } else {
-    showSuccess(password2);
-  }
+  checkRequired([username, email, password, password2]);
 });
