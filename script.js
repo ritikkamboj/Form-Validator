@@ -28,9 +28,14 @@ function showSuccess(input) {
   console.log(formControl);
   formControl.className = "form-control success";
 }
-function validateEmail(email) {
+function checkEmail(input) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+ if(emailRegex.test(input.value))
+ {
+    showSuccess(input);
+ }
+ else
+ showError(input,`${getReqName(input.id)} not in required format`)
 }
 function checkRequired(inputArr) {
   inputArr.forEach(function (input) {
@@ -44,6 +49,22 @@ function checkRequired(inputArr) {
 
 function getReqName(curName) {
   return curName.charAt(0).toUpperCase() + curName.slice(1);
+}
+function checkLength(input, min, max) {
+  if (input.value.length < min) {
+    showError(input, `${getReqName(input.id)} must be greater than ${min}`);
+  } else if (input.value.length > max) {
+    showError(input, `length must be less than ${max}`);
+  } else
+  showSuccess(input);
+}
+function checkPasswordMatch(input1 , input2)
+{
+    if(input1.value !== input2.value)
+    {
+        showError(input2,'Passwords are not matching with each other');
+    }
+
 }
 
 // form.addEventListener("submit", (e) => {
@@ -75,4 +96,8 @@ function getReqName(curName) {
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   checkRequired([username, email, password, password2]);
+  checkLength(username, 3, 16);
+  checkLength(password, 3, 10);
+  checkEmail(email);
+  checkPasswordMatch(password,password2);
 });
